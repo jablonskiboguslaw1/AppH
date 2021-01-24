@@ -7,9 +7,10 @@ import pl.bogus.hibernate.entity.Product;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.List;
 
 
-public class AppH02Read {
+public class AppH05OneToMany {
     private static final Logger logger = LogManager.getLogger(AppH.class);
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("unit");
 
@@ -18,10 +19,10 @@ public class AppH02Read {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
-
-        Product product = entityManager.find(Product.class, 1L);
-
-        logger.info(product);
+        List <Product> products = entityManager.createQuery("select  p from Product p").getResultList();
+        for (Product product : products){
+            logger.info(product);
+        }
 
         entityManager.getTransaction().commit();
         entityManager.close();

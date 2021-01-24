@@ -9,7 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 
-public class AppH02Read {
+public class AppH04Delete {
     private static final Logger logger = LogManager.getLogger(AppH.class);
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("unit");
 
@@ -21,6 +21,7 @@ public class AppH02Read {
 
         Product product = entityManager.find(Product.class, 1L);
 
+        entityManager.remove(product);
         logger.info(product);
 
         entityManager.getTransaction().commit();

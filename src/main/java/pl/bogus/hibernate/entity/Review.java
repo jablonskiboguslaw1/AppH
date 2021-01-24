@@ -10,8 +10,8 @@ public class Review {
     private Long id;
     private String content;
     private Integer rating;
-    @Column(name = "product_id")
-    private Long productId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product  product;
 
     public Long getId() {
         return id;
@@ -37,13 +37,14 @@ public class Review {
         this.rating = rating;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
+
 
     @Override
     public String toString() {
@@ -51,7 +52,6 @@ public class Review {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", rating=" + rating +
-                ", productId=" + productId +
                 '}';
     }
 }

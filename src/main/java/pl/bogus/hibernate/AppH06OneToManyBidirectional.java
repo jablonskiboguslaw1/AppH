@@ -22,9 +22,8 @@ public class AppH06OneToManyBidirectional {
 
         List<Review> reviews = entityManager.createQuery("select  r from Review r").getResultList();
         for (Review review : reviews) {
-
-
             logger.info(review);
+            logger.info(review.getProduct());
         }
 
         entityManager.getTransaction().commit();

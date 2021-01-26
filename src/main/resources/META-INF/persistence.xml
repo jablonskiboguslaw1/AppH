@@ -6,6 +6,7 @@
     <persistence-unit name="unit" transaction-type="RESOURCE_LOCAL">
         <class>pl.bogus.hibernate.entity.Product</class>
         <class>pl.bogus.hibernate.entity.Review</class>
+        <class>pl.bogus.hibernate.entity.Category</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url"

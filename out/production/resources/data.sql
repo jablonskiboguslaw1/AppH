@@ -36,3 +36,13 @@ INSERT INTO `review`(`id`,`product_id`,`content`,`rating`)VALUES(22,5,'Treść o
 INSERT INTO `review`(`id`,`product_id`,`content`,`rating`)VALUES(23,5,'Treść opinii 3',5);
 INSERT INTO `review`(`id`,`product_id`,`content`,`rating`)VALUES(24,5,'Treść opinii 4',5);
 INSERT INTO `review`(`id`,`product_id`,`content`,`rating`)VALUES(25,5,'Treść opinii 5',5);
+
+INSERT INTO `category`
+(`id`,`name`,`description`)
+VALUES
+(1,'Kategoria 1','Opis 1'),
+(2,'Kategoria 2','Opis 2'),
+(3,'Kategoria 3','Opis 3');
+Update product set category_id=1 where id=3;
+Update product set category_id=2 where id=4;
+Update product set category_id=3 where id=5;

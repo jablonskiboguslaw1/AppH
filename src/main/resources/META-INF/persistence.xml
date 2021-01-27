@@ -7,6 +7,7 @@
         <class>pl.bogus.hibernate.entity.Product</class>
         <class>pl.bogus.hibernate.entity.Review</class>
         <class>pl.bogus.hibernate.entity.Category</class>
+        <class>pl.bogus.hibernate.entity.Attribute</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url"

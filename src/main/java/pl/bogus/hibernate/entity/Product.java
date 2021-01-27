@@ -26,6 +26,12 @@ public class Product {
     @OneToOne(fetch = FetchType.LAZY)
     private Category category;
 
+    @ManyToMany
+    @JoinTable(name = "attribute_product",
+            joinColumns = {@JoinColumn(name = "product_id)")},
+            inverseJoinColumns = {@JoinColumn(name = "attribute_id")})
+    private List<Attribute> attributes;
+
     public Category getCategory() {
         return category;
     }
@@ -96,6 +102,14 @@ public class Product {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public List<Attribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     @Override

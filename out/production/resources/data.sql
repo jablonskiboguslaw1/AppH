@@ -46,3 +46,19 @@ VALUES
 Update product set category_id=1 where id=3;
 Update product set category_id=2 where id=4;
 Update product set category_id=3 where id=5;
+
+INSERT INTO `attribute`
+(`id`,`name`,`value`)
+VALUES
+(1,'COLOR','RED'),
+(2,'COLOR','GREEN'),
+(3,'COLOR','BLUE');
+INSERT INTO `product_attribute`
+(`product_id`, `attribute_id`)
+VALUES
+(3,1),
+(3,2),
+(3,3),
+(4,1),
+(4,2),
+(5,3);

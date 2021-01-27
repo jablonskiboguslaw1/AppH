@@ -27,8 +27,8 @@ public class Product {
     private Category category;
 
     @ManyToMany
-    @JoinTable(name = "attribute_product",
-            joinColumns = {@JoinColumn(name = "product_id)")},
+    @JoinTable(
+            joinColumns = {@JoinColumn(name = "product_id")},
             inverseJoinColumns = {@JoinColumn(name = "attribute_id")})
     private List<Attribute> attributes;
 

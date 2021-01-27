@@ -23,6 +23,7 @@ public class AppH10ManyToMany {
         Product product = entityManager.find(Product.class, 3L);
 
         logger.info(product);
+
         logger.info(product.getAttributes());
 
 

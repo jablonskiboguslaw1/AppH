@@ -3,7 +3,10 @@ package pl.bogus.hibernate.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -21,16 +24,22 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private ProductType productType;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE,CascadeType.PERSIST} )
     private List<Review> reviews;
     @OneToOne(fetch = FetchType.LAZY)
     private Category category;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             joinColumns = {@JoinColumn(name = "product_id")},
             inverseJoinColumns = {@JoinColumn(name = "attribute_id")})
-    private List<Attribute> attributes;
+    private Set<Attribute> attributes = new HashSet<>();
+
+
+    public void addAttributes(Attribute attribute) {
+        attributes.add(attribute);
+        attribute.getProducts().add(this);
+    }
 
     public Category getCategory() {
         return category;
@@ -104,11 +113,11 @@ public class Product {
         this.reviews = reviews;
     }
 
-    public List<Attribute> getAttributes() {
+    public Set<Attribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<Attribute> attributes) {
+    public void setAttributes(Set<Attribute> attributes) {
         this.attributes = attributes;
     }
 
@@ -123,5 +132,11 @@ public class Product {
                 ", price=" + price +
                 ", productType=" + productType +
                 '}';
+    }
+
+    public void addReview(Review review) {
+        reviews.add(review);
+        review.setProduct(this);
+
     }
 }

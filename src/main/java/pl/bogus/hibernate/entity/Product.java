@@ -28,7 +28,8 @@ public class Product {
     private List<Review> reviews;
     @OneToOne(fetch = FetchType.LAZY)
     private Category category;
-
+//  THIS IS RELATIONSHIP OWNER -> product can by removed and connections will be removed too
+    // If we want remove from attribute side the ForeignKey will  forbid
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             joinColumns = {@JoinColumn(name = "product_id")},

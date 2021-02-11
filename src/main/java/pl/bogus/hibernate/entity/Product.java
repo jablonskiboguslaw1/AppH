@@ -22,9 +22,9 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private ProductType productType;
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE,CascadeType.PERSIST} )
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE,CascadeType.PERSIST,},fetch = FetchType.EAGER)
     private Set<Review> reviews = new HashSet<>();
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private Category category;
 //  THIS IS RELATIONSHIP OWNER -> product can by removed and connections will be removed too
     // If we want remove from attribute side the ForeignKey will  forbid

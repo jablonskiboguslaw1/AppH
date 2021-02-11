@@ -1,5 +1,8 @@
 package pl.bogus.hibernate.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,6 +22,7 @@ public class Order {
 
     @OneToMany
     @JoinColumn(name = "order_id")
+    @Fetch(FetchMode.SUBSELECT)
     private Set<OrderRow> orderRows;
      public long getId() {
         return id;

@@ -8,6 +8,16 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@NamedEntityGraph(
+        name = "order-rows",
+        attributeNodes = {
+            @NamedAttributeNode(value = "orderRows", subgraph = "orderRows"),
+            @NamedAttributeNode("customer")},
+        subgraphs = @NamedSubgraph(
+                name = "orderRows",
+                attributeNodes = @NamedAttributeNode("product"))
+)
+
 @Entity
 @Table(name = "\"order\"")
 public class Order {
@@ -19,19 +29,29 @@ public class Order {
 
     private LocalDateTime created;
     private BigDecimal total;
+    @OneToOne
+    private Customer customer;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     @OneToMany
     @JoinColumn(name = "order_id")
     @Fetch(FetchMode.SUBSELECT)
     private Set<OrderRow> orderRows;
-     public long getId() {
+
+    public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
     }
-
 
 
     public LocalDateTime getCreated() {

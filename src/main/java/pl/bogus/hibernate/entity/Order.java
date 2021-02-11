@@ -29,7 +29,7 @@ public class Order {
 
     private LocalDateTime created;
     private BigDecimal total;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
     public Customer getCustomer() {

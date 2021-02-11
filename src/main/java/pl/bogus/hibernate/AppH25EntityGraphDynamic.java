@@ -36,7 +36,7 @@ public class AppH25EntityGraphDynamic {
 */
         EntityGraph<Order> entityGraph = entityManager.createEntityGraph(Order.class);
         entityGraph.addAttributeNodes("orderRows");
-        entityGraph.addAttributeNodes("customer");
+       // entityGraph.addAttributeNodes("customer");
         Subgraph<OrderRow> orderRows = entityGraph.addSubgraph("orderRows");
         orderRows.addAttributeNodes("product");
 
@@ -44,13 +44,14 @@ public class AppH25EntityGraphDynamic {
         //Order order = entityManager.find(Order.class, 1L, map);
         // or with query
         List<Order> orders = entityManager.createQuery(
-                "select o from Order o", Order.class)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
+                "select o from Order o" +
+                        " left join fetch o.customer", Order.class)
+                .setHint("javax.persistence.loadgraph", entityGraph)
                 .getResultList();
         //FIND uses join
-        //fetchgraph uses join
-        //loadgraph uses extra query to retrieve entity EAGER
-        // to use join with loadgraph you need to use "join fetch" in query
+        //fetchgraph uses join (no matter fetchType)
+        //loadgraph uses extra query o retrieve entity EAGER
+        // for entity out of graph you need to use "join fetch" in query
         for (Order order : orders) {
 
 

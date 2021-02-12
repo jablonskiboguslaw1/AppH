@@ -58,5 +58,15 @@ public class BatchReview {
     public void setProductId(Long productId) {
         this.productId = productId;
     }
+
+    @Override
+    public String toString() {
+        return "BatchReview{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", rating=" + rating +
+                ", productId=" + productId +
+                '}';
+    }
 }
 

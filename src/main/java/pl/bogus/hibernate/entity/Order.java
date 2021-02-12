@@ -1,23 +1,23 @@
 package pl.bogus.hibernate.entity;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
-
-@NamedEntityGraph(
-        name = "order-rows",
-        attributeNodes = {
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "order-and-rows",
+                attributeNodes = @NamedAttributeNode("orderRows")),
+        @NamedEntityGraph(
+                name = "order-rows",
+                attributeNodes = {
             @NamedAttributeNode(value = "orderRows", subgraph = "orderRows"),
             @NamedAttributeNode("customer")},
-        subgraphs = @NamedSubgraph(
-                name = "orderRows",
-                attributeNodes = @NamedAttributeNode("product"))
+                subgraphs = @NamedSubgraph(
+                        name = "orderRows",
+                        attributeNodes = @NamedAttributeNode("product"))
+)}
 )
-
 @Entity
 @Table(name = "\"order\"")
 public class Order {
@@ -29,7 +29,8 @@ public class Order {
 
     private LocalDateTime created;
     private BigDecimal total;
-    @OneToOne(fetch = FetchType.EAGER)
+
+    @OneToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
     public Customer getCustomer() {
@@ -42,7 +43,7 @@ public class Order {
 
     @OneToMany
     @JoinColumn(name = "order_id")
-    @Fetch(FetchMode.SUBSELECT)
+
     private Set<OrderRow> orderRows;
 
     public long getId() {

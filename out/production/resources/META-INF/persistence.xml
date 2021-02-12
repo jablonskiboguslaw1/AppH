@@ -11,7 +11,9 @@
         <class>pl.bogus.hibernate.entity.Customer</class>
         <class>pl.bogus.hibernate.entity.Order</class>
         <class>pl.bogus.hibernate.entity.OrderRow</class>
+        <class>pl.bogus.hibernate.entity.batch.BatchReview</class>
         <properties>
+
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url"
                       value="jdbc:mysql://localhost:3306/appHdb?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;serverTimezone=UTC"/>
@@ -21,6 +23,9 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.jdbc.batch_size" value="5"/>
+            <property name="hibernate.order_updates" value="true"/>
+            <property name="hibernate.order.inserts" value="true"/>
             <!--property name="hibernate.hbm2dll.auto" value="update"/-->
         </properties>
     </persistence-unit>

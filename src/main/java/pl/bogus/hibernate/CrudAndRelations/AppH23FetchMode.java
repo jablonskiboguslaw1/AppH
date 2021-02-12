@@ -1,4 +1,4 @@
-package pl.bogus.hibernate;
+package pl.bogus.hibernate.CrudAndRelations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

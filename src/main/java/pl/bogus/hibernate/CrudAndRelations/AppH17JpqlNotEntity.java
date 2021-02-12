@@ -1,11 +1,9 @@
-package pl.bogus.hibernate;
+package pl.bogus.hibernate.CrudAndRelations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pl.bogus.hibernate.entity.Product;
 
 import javax.persistence.*;
-import java.util.List;
 
 public class AppH17JpqlNotEntity {
     private static Logger logger = LogManager.getLogger(AppH17JpqlNotEntity.class);

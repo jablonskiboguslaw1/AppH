@@ -1,11 +1,7 @@
-package pl.bogus.hibernate;
+package pl.bogus.hibernate.CrudAndRelations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.jpa.QueryHints;
-import pl.bogus.hibernate.entity.Customer;
-import pl.bogus.hibernate.entity.Order;
-import pl.bogus.hibernate.entity.Product;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

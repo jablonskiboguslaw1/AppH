@@ -1,5 +1,7 @@
 package pl.bogus.hibernate.entity;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,16 +35,9 @@ public class Order {
     @OneToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
     @OneToMany
     @JoinColumn(name = "order_id")
+    @BatchSize(size = 10)
 
     private Set<OrderRow> orderRows;
 
@@ -52,6 +47,14 @@ public class Order {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
 

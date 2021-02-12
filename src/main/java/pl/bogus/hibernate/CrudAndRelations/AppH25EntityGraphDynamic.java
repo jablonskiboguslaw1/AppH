@@ -1,4 +1,4 @@
-package pl.bogus.hibernate;
+package pl.bogus.hibernate.CrudAndRelations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,9 +6,7 @@ import pl.bogus.hibernate.entity.Order;
 import pl.bogus.hibernate.entity.OrderRow;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AppH25EntityGraphDynamic {
 

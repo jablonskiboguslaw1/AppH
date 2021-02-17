@@ -10,6 +10,8 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -66,25 +68,27 @@ public class CriteriaTraining {
         ParameterExpression<Long> id1 = criteriaBuilder.parameter(Long.class);
         ParameterExpression<BigDecimal> total = criteriaBuilder.parameter(BigDecimal.class);
         ParameterExpression<String> namePart = criteriaBuilder.parameter(String.class);
+        ParameterExpression<Collection> ids = criteriaBuilder.parameter(Collection.class);
         query.select(customer).distinct(true)
                 .where(criteriaBuilder.and(
                         criteriaBuilder.or(
-                                criteriaBuilder.equal(customer.get("id"), id2),
-                                criteriaBuilder.equal(customer.get("id"), id1),
+                                customer.get("id").in(id1,id2),
+                                customer.get("id").in(ids),
                                 criteriaBuilder.like(
                                         customer.get("lastname"),
                                         criteriaBuilder.concat("%",criteriaBuilder.concat(namePart,"%")))),
 
-                        criteriaBuilder.not(criteriaBuilder.greaterThan(orders.get("total"), total))
+                        criteriaBuilder.not(criteriaBuilder.between(orders.get("total"), total, criteriaBuilder.literal(new BigDecimal("70.00"))))
                 ));
 
 
         TypedQuery<Customer> resultList = entityManager.createQuery(query);
         resultList.setParameter(id1, 1L);
         resultList.setParameter(id2, 3L);
+        resultList.setParameter(ids, Arrays.asList(4L,5L));
         resultList.setParameter(namePart, "ow");
 
-        resultList.setParameter(total, new BigDecimal("50.00"));
+        resultList.setParameter(total, new BigDecimal("10.00"));
         List<Customer> resultList1 = resultList.getResultList();
         for (Customer customer1 : resultList1) {
 

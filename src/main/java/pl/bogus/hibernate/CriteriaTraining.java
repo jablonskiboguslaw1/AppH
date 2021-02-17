@@ -11,10 +11,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
-public class AppH34CriteriaFiltering {
+public class CriteriaTraining {
 
-    private static Logger logger = LogManager.getLogger(AppH34CriteriaFiltering.class);
+    private static Logger logger = LogManager.getLogger();
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("unit");
 
     public static void main(String[] args) {
@@ -22,38 +23,42 @@ public class AppH34CriteriaFiltering {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
-         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Customer> criteriaQuery = criteriaBuilder.createQuery(Customer.class);
         Root<Customer> customerRoot = criteriaQuery.from(Customer.class);
         Join<Object, Object> orders = (Join<Object, Object>) customerRoot.fetch("orders", JoinType.INNER);
         orders.fetch("orderRows").fetch("product");
 
+
+        ParameterExpression<Long> id = criteriaBuilder.parameter(Long.class);
         ParameterExpression<BigDecimal> total = criteriaBuilder.parameter(BigDecimal.class);
-
-
-        criteriaQuery.select(customerRoot).distinct(true)
-                //where c.id=:id and o.total >50
+        criteriaQuery.select(customerRoot)
+                .distinct(true)
+                //    c.id = :id
                 .where(
                         criteriaBuilder.and(
-                                criteriaBuilder.or(
-                                criteriaBuilder.like(customerRoot.get("lastname"),"%ow%")),
-                                criteriaBuilder.greaterThan(orders.get("total"), total)
-                        )
-                );
+                                criteriaBuilder.equal(customerRoot.get("id"), id),
+                                criteriaBuilder.greaterThan(orders.get("total"), total)));
+
 
         TypedQuery<Customer> query = entityManager.createQuery(criteriaQuery);
 
+        query.setParameter(id, 2L);
         query.setParameter(total, new BigDecimal("30.00"));
         List<Customer> results = query.getResultList();
         for (Customer result : results) {
             logger.info(result);
-            logger.info(result.getOrders());
-            }
-
-
-
-
+            result.getOrders().forEach(order -> {
+                logger.info(order);
+                order.getOrderRows().forEach(orderRow -> {
+                            logger.info(orderRow);
+                            logger.info(orderRow.getProduct());
+                        });
+            });
+        }
         entityManager.getTransaction().commit();
         entityManager.close();
+
+
     }
 }

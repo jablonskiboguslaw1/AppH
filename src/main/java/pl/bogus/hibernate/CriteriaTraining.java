@@ -23,7 +23,7 @@ public class CriteriaTraining {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+       /* CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Customer> criteriaQuery = criteriaBuilder.createQuery(Customer.class);
         Root<Customer> customerRoot = criteriaQuery.from(Customer.class);
         Join<Object, Object> orders = (Join<Object, Object>) customerRoot.fetch("orders", JoinType.INNER);
@@ -55,7 +55,50 @@ public class CriteriaTraining {
                             logger.info(orderRow.getProduct());
                         });
             });
+        }*/
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Customer> query = criteriaBuilder.createQuery(Customer.class);
+        Root<Customer> customer = query.from(Customer.class);
+        Join<Object, Object> orders = (Join<Object, Object>) customer.fetch("orders", JoinType.INNER);
+        orders.fetch("orderRows").fetch("product");
+        ParameterExpression<Long> id2 = criteriaBuilder.parameter(Long.class);
+        ParameterExpression<Long> id1 = criteriaBuilder.parameter(Long.class);
+        ParameterExpression<BigDecimal> total = criteriaBuilder.parameter(BigDecimal.class);
+        ParameterExpression<String> namePart = criteriaBuilder.parameter(String.class);
+        query.select(customer).distinct(true)
+                .where(criteriaBuilder.and(
+                        criteriaBuilder.or(
+                                criteriaBuilder.equal(customer.get("id"), id2),
+                                criteriaBuilder.equal(customer.get("id"), id1),
+                                criteriaBuilder.like(
+                                        customer.get("lastname"),
+                                        criteriaBuilder.concat("%",criteriaBuilder.concat(namePart,"%")))),
+
+                        criteriaBuilder.not(criteriaBuilder.greaterThan(orders.get("total"), total))
+                ));
+
+
+        TypedQuery<Customer> resultList = entityManager.createQuery(query);
+        resultList.setParameter(id1, 1L);
+        resultList.setParameter(id2, 3L);
+        resultList.setParameter(namePart, "ow");
+
+        resultList.setParameter(total, new BigDecimal("50.00"));
+        List<Customer> resultList1 = resultList.getResultList();
+        for (Customer customer1 : resultList1) {
+
+            logger.info(customer1);
+            customer1.getOrders().forEach(order -> {
+                logger.info(order);
+                order.getOrderRows().forEach(orderRow -> {
+                    logger.info(orderRow);
+                    logger.info(orderRow.getProduct());
+                });
+            });
         }
+
+
         entityManager.getTransaction().commit();
         entityManager.close();
 

@@ -9,11 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class CriteriaTraining {
 
@@ -59,11 +55,11 @@ public class CriteriaTraining {
             });
         }*/
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        /*CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Customer> query = criteriaBuilder.createQuery(Customer.class);
         Root<Customer> customer = query.from(Customer.class);
-        Join<Object, Object> orders = (Join<Object, Object>) customer.fetch("orders", JoinType.INNER);
-        orders.fetch("orderRows").fetch("product");
+        Join<Object, Object> orders = (Join<Object, Object>) customer.fetch("orders", JoinType.LEFT);
+        orders.fetch("orderRows",JoinType.LEFT).fetch("product",JoinType.LEFT);
         ParameterExpression<Long> id2 = criteriaBuilder.parameter(Long.class);
         ParameterExpression<Long> id1 = criteriaBuilder.parameter(Long.class);
         ParameterExpression<BigDecimal> total = criteriaBuilder.parameter(BigDecimal.class);
@@ -76,9 +72,8 @@ public class CriteriaTraining {
                                 customer.get("id").in(ids),
                                 criteriaBuilder.like(
                                         customer.get("lastname"),
-                                        criteriaBuilder.concat("%",criteriaBuilder.concat(namePart,"%")))),
-
-                        criteriaBuilder.not(criteriaBuilder.between(orders.get("total"), total, criteriaBuilder.literal(new BigDecimal("70.00"))))
+                                        criteriaBuilder.concat("%",criteriaBuilder.concat(namePart,"%"))))
+                       // criteriaBuilder.between(orders.get("total"), total, criteriaBuilder.literal(new BigDecimal("70.00"))))
                 ));
 
 
@@ -88,7 +83,7 @@ public class CriteriaTraining {
         resultList.setParameter(ids, Arrays.asList(4L,5L));
         resultList.setParameter(namePart, "ow");
 
-        resultList.setParameter(total, new BigDecimal("10.00"));
+        //resultList.setParameter(total, new BigDecimal("10.00"));
         List<Customer> resultList1 = resultList.getResultList();
         for (Customer customer1 : resultList1) {
 
@@ -101,7 +96,44 @@ public class CriteriaTraining {
                 });
             });
         }
+*/
+        /*
+         * select c.id,c.lastname as customer, ca.name as category,SUM(orm.price) as total
+         * from Customer c
+         * inner join c.orders c
+         * inner join o.orderRows orw
+         * inner join orw.product p
+         * inner join p.category ca
+         * group by ca, c
+         * having SUM(orm.price)>50
+         * order by total desc
+         *
+         *
+         *
+         * */
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Customer> customer = criteriaQuery.from(Customer.class);
+        Join<Object, Object> orders = customer.join("orders", JoinType.INNER);
+        Join<Object, Object> orderRows = orders.join("orderRows");
+        Join<Object, Object> product = orderRows.join("product");
+        Join<Object, Object> category = product.join("category");
 
+        criteriaQuery.multiselect(
+                customer.get("id"),
+                customer.get("lastname"),
+                category.get("name"),
+                criteriaBuilder.sum(orderRows.get("price"))
+                )
+                .groupBy(category.get("id"), customer.get("id"))
+                .orderBy(criteriaBuilder.desc(criteriaBuilder.sum(
+                        orderRows.get("price")))).having(criteriaBuilder.greaterThan(criteriaBuilder.sum(orderRows.get("price")),50));
+
+        TypedQuery<Object[]> query = entityManager.createQuery(criteriaQuery);
+        List<Object[]> results = query.getResultList();
+        for (Object[] result : results) {
+            logger.info(result[0]+", "+result[1]+", "+result[2]+", "+result[3]);
+        }
 
         entityManager.getTransaction().commit();
         entityManager.close();

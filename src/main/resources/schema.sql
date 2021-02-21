@@ -84,3 +84,11 @@ FOREIGN KEY (`order_id`) REFERENCES `order` (`id`),
 CONSTRAINT `fk_order_row_product_id`
 FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
 );
+
+DROP TABLE IF EXISTS `customer_address`;
+CREATE TABLE `customer_address` (
+`customer_id` BIGINT NOT NULL,
+`address_type`VARCHAR(12) NOT NULL,
+`postal_code`VARCHAR(6) NOT NULL,
+`street`VARCHAR(120) NOT NULL,
+`city`VARCHAR(80) NOT NULL);

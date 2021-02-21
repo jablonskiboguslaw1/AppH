@@ -1,13 +1,11 @@
-package pl.bogus.hibernate;
+package pl.bogus.hibernate.CrudAndRelations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pl.bogus.hibernate.entity.batch.BatchReview;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class AppH32DeleteQuerying {
 

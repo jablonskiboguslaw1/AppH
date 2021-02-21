@@ -2,6 +2,7 @@ package pl.bogus.hibernate.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,14 +12,24 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ElementCollection
+    private List<Address> address;
 
     private String firstname;
     private String lastname;
     private LocalDateTime created;
     private LocalDateTime updated;
-@OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer")
 
     private Set<Order> orders;
+
+    public List<Address> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<Address> address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;

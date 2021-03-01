@@ -109,3 +109,20 @@ ALTER TABLE `order_row` DROP FOREIGN KEY `fk_order_row_order_id`;
 ALTER TABLE `order_row` CHANGE COLUMN `order_id` `order_id` BIGINT NULL;
 ALTER TABLE  `order_row` ADD CONSTRAINT `fk_order_row_order_id`
 FOREIGN KEY(`order_id`) REFERENCES `order` (`id`);
+
+
+DROP TABLE IF EXISTS `base_product`;
+CREATE TABLE `base_product` (
+`id` BIGINT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(100) NOT NULL,
+`description` VARCHAR(500) NOT NULL,
+`created` DATETIME NOT NULL,
+`product_type` VARCHAR(15) NOT NULL,
+`weight` DECIMAL(5,2),
+`width` INT,
+`length` INT,
+`height` INT,
+`downloadable` boolean,
+`file_path` VARCHAR(100),
+`file_name` VARCHAR(100),
+PRIMARY KEY (`id`));

@@ -13,6 +13,9 @@
         <class>pl.bogus.hibernate.entity.OrderRow</class>
         <class>pl.bogus.hibernate.entity.CustomerDetails</class>
         <class>pl.bogus.hibernate.entity.batch.BatchReview</class>
+        <class>pl.bogus.hibernate.entity.BaseProduct</class>
+        <class>pl.bogus.hibernate.entity.VirtualProduct</class>
+        <class>pl.bogus.hibernate.entity.RealProduct</class>
         <properties>
 
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

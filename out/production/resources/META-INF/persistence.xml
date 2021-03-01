@@ -11,6 +11,7 @@
         <class>pl.bogus.hibernate.entity.Customer</class>
         <class>pl.bogus.hibernate.entity.Order</class>
         <class>pl.bogus.hibernate.entity.OrderRow</class>
+        <class>pl.bogus.hibernate.entity.CustomerDetails</class>
         <class>pl.bogus.hibernate.entity.batch.BatchReview</class>
         <properties>
 

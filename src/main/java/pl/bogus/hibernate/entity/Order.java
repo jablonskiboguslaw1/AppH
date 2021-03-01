@@ -35,7 +35,7 @@ public class Order {
     @OneToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "order_id")
     @BatchSize(size = 10)
 

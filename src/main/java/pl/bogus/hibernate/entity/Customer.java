@@ -22,6 +22,16 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
 
     private Set<Order> orders;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL, optional = false)
+    private CustomerDetails customerDetails;
+
+    public CustomerDetails getCustomerDetails() {
+        return customerDetails;
+    }
+
+    public void setCustomerDetails(CustomerDetails customerDetails) {
+        this.customerDetails = customerDetails;
+    }
 
     public List<Address> getAddress() {
         return address;

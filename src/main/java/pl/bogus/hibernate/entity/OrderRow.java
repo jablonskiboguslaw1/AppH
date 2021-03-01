@@ -11,8 +11,9 @@ public class OrderRow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private BigDecimal price;
-@OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Product product;
+
     public BigDecimal getPrice() {
         return price;
     }

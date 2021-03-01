@@ -92,3 +92,20 @@ CREATE TABLE `customer_address` (
 `postal_code`VARCHAR(6) NOT NULL,
 `street`VARCHAR(120) NOT NULL,
 `city`VARCHAR(80) NOT NULL);
+
+DROP TABLE IF EXISTS `customer_details`;
+CREATE TABLE `customer_details`(
+`id` BIGINT NOT NULL,
+`birth_place` VARCHAR(100) NOT NULL,
+`birth_day` DATETIME NOT NULL,
+`father_name` VARCHAR(50),
+`mother_name` VARCHAR(50),
+`pesel` VARCHAR(11),
+PRIMARY KEY (`id`),
+FOREIGN KEY(`id`) REFERENCES customer(`id`));
+
+
+ALTER TABLE `order_row` DROP FOREIGN KEY `fk_order_row_order_id`;
+ALTER TABLE `order_row` CHANGE COLUMN `order_id` `order_id` BIGINT NULL;
+ALTER TABLE  `order_row` ADD CONSTRAINT `fk_order_row_order_id`
+FOREIGN KEY(`order_id`) REFERENCES `order` (`id`);
